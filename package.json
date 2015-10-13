@@ -1,5 +1,5 @@
 {
-  "name": "tagplusplus",
+  "name": "tagplusone",
   "version": "1.0.0",
   "description": "Creates incremental Git tags",
   "main": "index.js",
@@ -8,18 +8,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/simonrycroft/gitplusplus"
+    "url": "https://github.com/simonrycroft/tagplusone"
   },
   "keywords": [
     "git",
     "tags"
   ],
+  "preferGlobal": "true",
+  "bin": "./index.js",
   "author": "Simon Rycroft",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/simonrycroft/gitplusplus/issues"
+    "url": "https://github.com/simonrycroft/tagplusone/issues"
   },
-  "homepage": "https://github.com/simonrycroft/gitplusplus",
+  "homepage": "https://github.com/simonrycroft/tagplusone",
   "dependencies": {
     "nodegit": "^0.5.0"
   }

@@ -1,1 +1,3 @@
-console.log("Hello World!");
+#! /usr/bin/env node
+console.log('Wobble');
+
