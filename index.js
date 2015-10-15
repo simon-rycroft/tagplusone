@@ -1,3 +1,5 @@
 #! /usr/bin/env node
-console.log('Wobble');
+'use strict';
+let gitClient = require('./lib/gitClient');
 
+gitClient.sayHello();
