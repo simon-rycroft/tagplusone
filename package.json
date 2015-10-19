@@ -15,7 +15,7 @@
     "tags"
   ],
   "preferGlobal": "true",
-  "bin": "./index.js",
+  "bin": "./dist/index.js",
   "author": "Simon Rycroft",
   "license": "MIT",
   "bugs": {

@@ -1,6 +1,6 @@
 'use strict';
 
-import {NodeGit} from 'nodegit';
+import {NodeGit} from './nodegit';
 
 export default class GitClient {
     //sayHello() {
