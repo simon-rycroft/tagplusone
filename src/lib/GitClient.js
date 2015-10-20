@@ -1,10 +1,8 @@
 'use strict';
 
-import {NodeGit} from './nodegit';
-
 export default class GitClient {
-    //sayHello() {
-    //    console.log('Hello!');
-    //}
+    sayHello() {
+        console.log('Hello!');
+    }
 }
 
