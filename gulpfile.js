@@ -1,8 +1,11 @@
-var gulp = require('gulp');
-var babel = require('gulp-babel');
-var del = require('del');
-var mocha = require('gulp-mocha');
-var jshint = require('gulp-jshint');
+require('babel/register');
+
+var gulp = require('gulp'),
+    babel = require('gulp-babel'),
+    del = require('del'),
+    mocha = require('gulp-mocha'),
+    jshint = require('gulp-jshint'),
+    gutil = require('gulp-util');
 
 /**
  * Runs all build tasks in parallel.
@@ -28,7 +31,7 @@ gulp.task('clean', function () {
     del(['dist/**/*']);
 });
 
-gulp.task('test', ['build'], function() {
+gulp.task('test', function() {
     return gulp.src(['tests/**/*.js'], { read: false })
         .pipe(mocha({reporter: 'min'}))
         .on('error', gutil.log);

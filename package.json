@@ -24,6 +24,7 @@
   "homepage": "https://github.com/simonrycroft/tagplusone",
   "dependencies": {},
   "devDependencies": {
+    "babel": "^5.8.23",
     "chai": "^3.4.0",
     "del": "^2.0.2",
     "gulp": "^3.9.0",
