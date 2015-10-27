@@ -3,6 +3,8 @@
 import {exec} from 'child_process';
 
 export default class GitClient {
-    tag(){}
+    tag() {
+        exec('git tag');
+    }
 }
 
