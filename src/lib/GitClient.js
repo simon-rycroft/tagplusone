@@ -1,8 +1,8 @@
 'use strict';
 
+import {exec} from 'child_process';
+
 export default class GitClient {
-    sayHello() {
-        console.log('Hello!');
-    }
+    tag(){}
 }
 
