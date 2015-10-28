@@ -8,6 +8,8 @@ import _ from 'lodash';
 import GitClient from '../../../src/lib/GitClient';
 
 describe('The Git Client', function() {
+
+    // TODO async
  
     let git,
         spawn;
