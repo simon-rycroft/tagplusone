@@ -8,15 +8,40 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
+var _child_process = require('child_process');
+
 var GitClient = (function () {
     function GitClient() {
         _classCallCheck(this, GitClient);
     }
 
     _createClass(GitClient, [{
-        key: 'sayHello',
-        value: function sayHello() {
-            console.log('Hello!');
+        key: 'tag',
+        value: function tag(done) {
+
+            console.log('arse');
+
+            var tag = (0, _child_process.spawn)('git', ['tag']),
+                output = undefined,
+                err = undefined;
+
+            tag.stdout.on('data', function (data) {
+                console.log('Calling...');
+                output += data.toString();
+            });
+
+            tag.stderr.on('data', function (data) {
+                console.log('Receiving data...');
+                err += data.toString();
+            });
+
+            tag.on('close', function (code) {
+                console.log('Closing...');
+                if (code !== 0) {
+                    err += "git tag exited with error code " + code;
+                }
+                done(err, output);
+            });
         }
     }]);
 
