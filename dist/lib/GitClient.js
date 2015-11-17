@@ -38,7 +38,7 @@ var GitClient = (function () {
                 if (err) {
                     return callback(err);
                 } else {
-                    return callback(err, output);
+                    return callback(null, output);
                 }
             });
         }

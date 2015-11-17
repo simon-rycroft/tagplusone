@@ -37,6 +37,13 @@ gulp.task('test', function() {
         .on('error', gutil.log);
 });
 
+// TODO: Try gulp-mocha-tdd so we can make use of node-inspector
+gulp.task('test:debug', function() {
+    return gulp.src(['tests/**/*.js'], { read: false })
+        .pipe(mocha({reporter: 'min'}))
+        .on('error', gutil.log);
+});
+
 gulp.task('lint', function(){
     return gulp.src(['src/**/*.js'])
         .pipe(jshint());

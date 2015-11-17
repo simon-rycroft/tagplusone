@@ -24,7 +24,7 @@ export default class GitClient {
             if (err) {
                 return callback(err);
             } else {
-                return callback(err, output);
+                return callback(null, output);
             }
         });
     }
