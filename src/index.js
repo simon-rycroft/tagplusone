@@ -3,6 +3,13 @@
 
 import GitClient from './lib/GitClient';
 
-let git = new GitClient();
+const git = new GitClient();
 
-git.sayHello();
+git.tag((err, data) => {
+    if (err) {
+        console.log(err);
+        process.exit(1);
+    }
+
+    console.log(`Data: ${data}`);
+});

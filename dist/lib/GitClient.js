@@ -17,30 +17,29 @@ var GitClient = (function () {
 
     _createClass(GitClient, [{
         key: 'tag',
-        value: function tag(done) {
-
-            console.log('arse');
+        value: function tag(callback) {
 
             var tag = (0, _child_process.spawn)('git', ['tag']),
                 output = undefined,
                 err = undefined;
 
             tag.stdout.on('data', function (data) {
-                console.log('Calling...');
                 output += data.toString();
             });
 
-            tag.stderr.on('data', function (data) {
-                console.log('Receiving data...');
+            tag.stderr.on('err', function (data) {
                 err += data.toString();
             });
 
             tag.on('close', function (code) {
-                console.log('Closing...');
                 if (code !== 0) {
                     err += "git tag exited with error code " + code;
                 }
-                done(err, output);
+                if (err) {
+                    return callback(err);
+                } else {
+                    return callback(err, output);
+                }
             });
         }
     }]);

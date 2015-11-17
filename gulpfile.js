@@ -42,3 +42,6 @@ gulp.task('lint', function(){
         .pipe(jshint());
 });
 
+gulp.task('watch', function() {
+   gulp.watch(['src/**/*.js'], ['build']);
+});

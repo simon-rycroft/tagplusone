@@ -10,4 +10,11 @@ var _libGitClient2 = _interopRequireDefault(_libGitClient);
 
 var git = new _libGitClient2['default']();
 
-git.sayHello();
+git.tag(function (err, data) {
+    if (err) {
+        console.log(err);
+        process.exit(1);
+    }
+
+    console.log('Data: ' + data);
+});
