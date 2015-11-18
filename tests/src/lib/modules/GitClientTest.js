@@ -54,8 +54,26 @@ describe('The Git Client', () => {
                 assert.equal(1, spawn.calls.length, 'spawn() was not called the correct number of times');
                 assert.equal('git', spawn.calls[0].command, 'incorrect spawn() command called');
                 assert.deepEqual(['tag'], spawn.calls[0].args, 'spawn() was called with the wrong args');
-                assert.isNull(err);
                 assert.equal(expected, data);
+                done();
+            });
+        });
+
+        it('should return an empty string if no tags are found', (done) => {
+            let expected = '';
+            spawn.setDefault(spawn.simple(0));
+            git.tag((err, data) => {
+                assert.equal(expected, data);
+                done();
+            });
+        });
+
+        it('should correctly handle git errors', (done) => {
+            let expected = 'Eeeks!';
+            spawn.setDefault(spawn.simple(0, null, expected));
+            git.tag((err, data) => {
+                assert.ok(err, 'tag() did not throw an error');
+                assert.equal(expected, err);
                 done();
             });
         });

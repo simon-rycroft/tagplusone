@@ -8,13 +8,13 @@ export default class GitClient {
 
         let tag = spawn('git', ['tag']),
             output = '',
-            err;
+            err = '';
 
         tag.stdout.on('data', (data) => {
             output += data.toString();
         });
 
-        tag.stderr.on('err', (data) => {
+        tag.stderr.on('data', (data) => {
             err += data.toString();
         });
 

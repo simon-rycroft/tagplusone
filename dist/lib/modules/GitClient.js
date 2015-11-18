@@ -21,13 +21,13 @@ var GitClient = (function () {
 
             var tag = (0, _child_process.spawn)('git', ['tag']),
                 output = '',
-                err = undefined;
+                err = '';
 
             tag.stdout.on('data', function (data) {
                 output += data.toString();
             });
 
-            tag.stderr.on('err', function (data) {
+            tag.stderr.on('data', function (data) {
                 err += data.toString();
             });
 
