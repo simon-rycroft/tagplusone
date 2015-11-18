@@ -46,12 +46,16 @@ describe('The Git Client', () => {
             assert.isFunction(git.tag);
         });
 
-        it('should execute the shell command "git tag"', (done) => {
+        it('should execute the shell command "git tag" and capture the output', (done) => {
+            let expected = 'v1\nv2\nv3';
+            spawn.setDefault(spawn.simple(0, expected));
             git.tag((err, data) => {
                 assert.ok(!err, 'tag() threw an unexpected error');
                 assert.equal(1, spawn.calls.length, 'spawn() was not called the correct number of times');
                 assert.equal('git', spawn.calls[0].command, 'incorrect spawn() command called');
                 assert.deepEqual(['tag'], spawn.calls[0].args, 'spawn() was called with the wrong args');
+                assert.isNull(err);
+                assert.equal(expected, data);
                 done();
             });
         });

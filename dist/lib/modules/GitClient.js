@@ -20,7 +20,7 @@ var GitClient = (function () {
         value: function tag(callback) {
 
             var tag = (0, _child_process.spawn)('git', ['tag']),
-                output = undefined,
+                output = '',
                 err = undefined;
 
             tag.stdout.on('data', function (data) {

@@ -7,7 +7,8 @@ export default class GitClient {
     tag(callback) {
 
         let tag = spawn('git', ['tag']),
-            output, err;
+            output = '',
+            err;
 
         tag.stdout.on('data', (data) => {
             output += data.toString();
