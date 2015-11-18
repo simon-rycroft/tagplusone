@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 'use strict';
 
-import GitClient from './lib/GitClient';
+import GitClient from './lib/modules/GitClient';
 
 const git = new GitClient();
 

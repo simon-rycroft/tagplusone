@@ -4,11 +4,11 @@
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _libGitClient = require('./lib/GitClient');
+var _libModulesGitClient = require('./lib/modules/GitClient');
 
-var _libGitClient2 = _interopRequireDefault(_libGitClient);
+var _libModulesGitClient2 = _interopRequireDefault(_libModulesGitClient);
 
-var git = new _libGitClient2['default']();
+var git = new _libModulesGitClient2['default']();
 
 git.tag(function (err, data) {
     if (err) {
