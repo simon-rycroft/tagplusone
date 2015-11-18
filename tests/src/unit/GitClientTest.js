@@ -6,18 +6,32 @@ import async from 'async';
 import mockSpawn from 'mock-spawn';
 import _ from 'lodash';
 
-import GitClient from '../../../src/lib/GitClient';
+const libPath = '../../../src/lib/GitClient';
 
 describe('The Git Client', () => {
 
-    let git,
+    let GitClient,
+        git,
         spawn;
 
     beforeEach(() => {
-        git = new GitClient();
         spawn = mockSpawn(false);
         mockery.enable({ useCleanCache: true });
         mockery.registerMock('child_process', { spawn: spawn });
+        mockery.registerAllowables([
+            libPath,
+            'fancy-log',
+            'chalk',
+            'escape-string-regexp',
+            'ansi-styles',
+            'strip-ansi',
+            'ansi-regex',
+            'has-ansi',
+            'supports-color',
+            'dateformat',
+        ], true);
+        GitClient = require(libPath);
+        git = new GitClient();
     });
 
     afterEach(() => {
@@ -33,31 +47,13 @@ describe('The Git Client', () => {
         });
 
         it('should execute the shell command "git tag"', (done) => {
-            spawn.setDefault((cb) => {
-                this.stdout.write('Calling');
-                //`command`, `args` and `opts` available via `this`
-                //                assert.ok('foo2', this.command);
-                //                                this.data = 'XXX';
-                return cb(1); //0 is the exit code
-            });
-            //git.tag((err, data) => {
-            //    assert.ok(!err, 'tag() threw an unexpected error');
-            //    console.log(spawn.calls);
-            //    assert.equal(1, spawn.calls.length, 'spawn() was not called the correct number of times');
-            //    assert.equal('git', spawn.call.command, 'incorrect spawn() command called');
-            //    done();
-            //})
-            
-            async.series([
-                (next) => { git.tag(next); }
-            ], (err) => {
-                assert.ok(!err);
-                console.log(spawn.calls.length);
+            git.tag((err, data) => {
+                assert.ok(!err, 'tag() threw an unexpected error');
+                assert.equal(1, spawn.calls.length, 'spawn() was not called the correct number of times');
+                assert.equal('git', spawn.calls[0].command, 'incorrect spawn() command called');
+                assert.deepEqual(['tag'], spawn.calls[0].args, 'spawn() was called with the wrong args');
                 done();
             });
-            //git.tag();
-            //assert.equal(1, spawn.calls.length, 'Incorrect number of command calls.')
-            //assert.equal('tag', spawn.calls[0].command);
         });
     });
 });
