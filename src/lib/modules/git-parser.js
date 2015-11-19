@@ -2,21 +2,19 @@
 
 export default class GitParser {
 
-    parseTags(tagsString, callback) {
-
-        let data = [],
-            err = '';
-
-        if (typeof tagsString !== "string") {
-            err += 'tags must be a string';
-        } else {
-            data = tagsString.split('\n');
+    parseTags(tags, callback) {
+        if (typeof tags !== "string") {
+            return callback('tags must be a string');
         }
+        return callback(null, tags.split('\n'));
+    }
 
-        if (err) {
-            return callback(err);
-        } else {
-            return callback(null, data);
+    filterTags(tags, prefix, callback) {
+        if (tags.constructor !== Array) {
+            return callback('tags must be an array');
+        }
+        if (typeof prefix !== "string") {
+            return callback('prefix must be a string');
         }
     }
 }
