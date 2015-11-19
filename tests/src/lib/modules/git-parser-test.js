@@ -50,6 +50,7 @@ describe('The Git Parser', () => {
                 expected = 'tags must be an array';
             parser.filterTags(inputTags, inputPrefix, (err, data) => {
                 assert.ok(err, 'filterTags() accepted a non-array tags argument');
+                assert.equal(expected, err);
                 done();
             });
         });
@@ -60,6 +61,7 @@ describe('The Git Parser', () => {
                 expected = 'prefix must be a string';
             parser.filterTags(inputTags, inputPrefix, (err, data) => {
                 assert.ok(err, 'filterTags() accepted a non-string value for the prefix argument');
+                assert.equal(expected, err);
                 done();
             });
         });
@@ -84,6 +86,67 @@ describe('The Git Parser', () => {
                 done();
             });
         });
-    })
+
+        it('should return an empty array if no tags matching tags are found', (done) => {
+            let inputTags = [
+                    '1',
+                    'v2',
+                    'build3',
+                    'v4',
+                    'version4',
+                    'v.4'
+                ],
+                inputPrefix = 'ver',
+                expected = [];
+            parser.filterTags(inputTags, inputPrefix, (err, data) => {
+                assert.ok(!err, 'filterTags() threw an unexpected error');
+                assert.deepEqual(expected, data, 'filterTags() did not filter the tags correctly');
+                done();
+            });
+        });
+    });
+
+    describe('sortTags() method', () => {
+        
+        it('should exist', () => {
+            assert.isFunction(parser.sortTags);
+        });
+
+        it('should only accept an array as the tags argument', (done) => {
+            let inputTags = {},
+                expected = 'tags must be an array';
+            parser.sortTags(inputTags, (err, data) => {
+                assert.ok(err, 'sortTags() accepts a non-array value for the tags argument');
+                assert.equal(expected, err);
+                done();
+            });
+        });
+
+        xit('should sort tags so the highest is the first in the array', (done) => {
+            let inputTags = [
+                    'v100',
+                    'v1',
+                    'v23',
+                    'v101',
+                    'v99',
+                    'v15',
+                    'v102',
+                    'v6',
+                ],
+                expected = [
+                    'v102',
+                    'v101',
+                    'v100',
+                    'v99',
+                    'v23',
+                    'v15',
+                    'v6',
+                    'v1',
+                ];
+            parser.sortTags(inputTags, (err, data) => {
+                assert.ok(!err, 'sortTags() threw an unexpected error');
+            });
+        });
+    });
 });
 

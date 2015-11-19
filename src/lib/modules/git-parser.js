@@ -23,4 +23,10 @@ export default class GitParser {
             });
         callback(null, filteredTags);
     }
+
+    sortTags(tags, callback) {
+        if (tags.constructor !== Array) {
+            return callback('tags must be an array');
+        }
+    }
 }
