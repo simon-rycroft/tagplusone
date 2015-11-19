@@ -6,7 +6,7 @@ import async from 'async';
 import mockSpawn from 'mock-spawn';
 import _ from 'lodash';
 
-const libPath = '../../../../src/lib/modules/GitClient';
+const libPath = '../../../../src/lib/modules/git-client';
 
 describe('The Git Client', () => {
 

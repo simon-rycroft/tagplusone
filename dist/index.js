@@ -4,7 +4,7 @@
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _libModulesGitClient = require('./lib/modules/GitClient');
+var _libModulesGitClient = require('./lib/modules/git-client');
 
 var _libModulesGitClient2 = _interopRequireDefault(_libModulesGitClient);
 
