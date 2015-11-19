@@ -2,9 +2,7 @@
 
 import {assert, expect} from 'chai';
 import mockery from 'mockery';
-import async from 'async';
 import mockSpawn from 'mock-spawn';
-import _ from 'lodash';
 
 const libPath = '../../../../src/lib/modules/git-client';
 
@@ -40,7 +38,7 @@ describe('The Git Client', () => {
         mockery.disable();
     });
 
-    describe('tag method', () => {
+    describe('tag() method', () => {
 
         it('should exist', () => {
             assert.isFunction(git.tag);
