@@ -64,7 +64,7 @@ describe('The Git Parser', () => {
             });
         });
 
-        xit('should only return tags having the prefix', (done) => {
+        it('should only return tags having the prefix', (done) => {
             let inputTags = [
                     '1',
                     'v2',
@@ -78,6 +78,11 @@ describe('The Git Parser', () => {
                     'v2',
                     'v4',
                 ];
+            parser.filterTags(inputTags, inputPrefix, (err, data) => {
+                assert.ok(!err, 'filterTags() threw an unexpected error');
+                assert.deepEqual(expected, data, 'filterTags() did not filter the tags correctly');
+                done();
+            });
         });
     })
 });

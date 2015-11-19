@@ -16,5 +16,11 @@ export default class GitParser {
         if (typeof prefix !== "string") {
             return callback('prefix must be a string');
         }
+        let validTagPattern = "^" + prefix + "[1-9]{1}[0-9]*",
+            regex = new RegExp(validTagPattern),
+            filteredTags = tags.filter((tag) => {
+                return tag.match(regex);
+            });
+        callback(null, filteredTags);
     }
 }
