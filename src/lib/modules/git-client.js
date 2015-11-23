@@ -4,9 +4,14 @@ import {spawn} from 'child_process';
 
 export default class GitClient {
 
-    tag(callback) {
+    tag(prefix, callback) {
 
-        let tag = spawn('git', ['tag']),
+        if (prefix && typeof prefix !== 'string') {
+            return callback('prefix must be a string');
+        }
+
+        let args = !prefix ? ['tag'] : ['tag', '-l', prefix + '*'],
+            tag = spawn('git', args),
             output = '',
             err = '';
 

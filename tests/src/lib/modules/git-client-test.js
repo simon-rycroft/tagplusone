@@ -47,7 +47,7 @@ describe('The Git Client', () => {
         it('should execute the shell command "git tag" and capture the output', (done) => {
             let expected = 'v1\nv2\nv3';
             spawn.setDefault(spawn.simple(0, expected));
-            git.tag((err, data) => {
+            git.tag(null, (err, data) => {
                 assert.ok(!err, 'tag() threw an unexpected error');
                 assert.equal(1, spawn.calls.length, 'spawn() was not called the correct number of times');
                 assert.equal('git', spawn.calls[0].command, 'incorrect spawn() command called');
@@ -56,11 +56,32 @@ describe('The Git Client', () => {
                 done();
             });
         });
+        
+        it('should pass on an optional tag prefix', (done) => {
+            let inputPrefix = 'v';
+            git.tag(inputPrefix, (err, data) => {
+                assert.ok(!err, 'tag() threw an unexpected error');
+                assert.equal(1, spawn.calls.length, 'spawn() was not called the correct number of times');
+                assert.equal('git', spawn.calls[0].command, 'incorrect spawn() command called');
+                assert.deepEqual(['tag', '-l', inputPrefix + '*'], spawn.calls[0].args, 'spawn() was called with the wrong args');
+                done();
+            });
+        });
+
+        it ('should only accept a string value for the prefix', (done) => {
+            let inputPrefix = {},
+                expected = 'prefix must be a string';
+            git.tag(inputPrefix, (err, data) => {
+                assert.ok(err, 'tag() should have thrown en error');
+                assert.equal(expected, err);
+                done();
+            });
+        });
 
         it('should return an empty string if no tags are found', (done) => {
             let expected = '';
             spawn.setDefault(spawn.simple(0));
-            git.tag((err, data) => {
+            git.tag(null, (err, data) => {
                 assert.equal(expected, data);
                 done();
             });
@@ -69,7 +90,7 @@ describe('The Git Client', () => {
         it('should correctly handle git errors', (done) => {
             let expected = 'Eeeks!';
             spawn.setDefault(spawn.simple(0, null, expected));
-            git.tag((err, data) => {
+            git.tag(null, (err, data) => {
                 assert.ok(err, 'tag() did not throw an error');
                 assert.equal(expected, err);
                 done();
