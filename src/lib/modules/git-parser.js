@@ -12,11 +12,11 @@ export default class GitParser {
         return callback(null, tags.split('\n'));
     }
 
-    filterTags(tags, prefix, callback) {
+    filterTags(tags, prefix = null, callback) {
         if (tags.constructor !== Array) {
             return callback('tags must be an array');
         }
-        if (typeof prefix !== "string") {
+        if (prefix && typeof prefix !== "string") {
             return callback('prefix must be a string');
         }
         let validTagPattern = "^" + prefix + "[1-9]{1}[0-9]*$",
@@ -27,11 +27,11 @@ export default class GitParser {
         callback(null, filteredTags);
     }
 
-    stripPrefix(tags, prefix, callback) {
+    stripPrefix(tags, prefix = null, callback) {
         if (tags.constructor !== Array) {
             return callback('tags must be an array');
         }
-        if (typeof prefix !== "string") {
+        if (prefix && typeof prefix !== "string") {
             return callback('prefix must be a string');
         }
         let data = _.map(tags, (tag) => {
@@ -50,14 +50,15 @@ export default class GitParser {
         return callback(null, data);
     }
 
-    getNextTag(tags, prefix, callback) {
+    getNextTag(tags, prefix = null, callback) {
         if (typeof tags !== 'string') {
             return callback('tags must be a string');
         }
-        if (typeof prefix !== "string") {
+        if (prefix && typeof prefix !== "string") {
             return callback('prefix must be a string');
         }
-        let locals = {};
+        let locals = {},
+            num;
         async.series([
             (cb) => {
                 this.parseTags(tags, (err, data) => {
@@ -104,9 +105,11 @@ export default class GitParser {
                 return callback(err);
             }
             if (locals.sortedTags.length === 0) {
-                return callback(null, 0);
+                return callback(null, prefix + 1);
             }
-            return callback(null, prefix + +locals.sortedTags[0]++);
+            num = +locals.sortedTags[0];
+            num++;
+            return callback(null, prefix + num);
         });
     }
 }

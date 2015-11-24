@@ -4,7 +4,7 @@ import {spawn} from 'child_process';
 
 export default class GitClient {
 
-    tag(prefix, callback) {
+    tag(prefix = null, callback) {
 
         if (prefix && typeof prefix !== 'string') {
             return callback('prefix must be a string');

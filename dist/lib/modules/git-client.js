@@ -18,6 +18,7 @@ var GitClient = (function () {
     _createClass(GitClient, [{
         key: 'tag',
         value: function tag(prefix, callback) {
+            if (prefix === undefined) prefix = null;
 
             if (prefix && typeof prefix !== 'string') {
                 return callback('prefix must be a string');

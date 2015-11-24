@@ -219,10 +219,21 @@ describe('The Git Parser', () => {
             });
         });
 
+        it('should return the first tag in the series if no matching tags exist', (done) => {
+            let inputTags = 'v1\nversion1\nbuild1\nv10\nv9\nv11\nv8',
+                inputPrefix = 'ver',
+                expected = 'ver1';
+            parser.getNextTag(inputTags, inputPrefix, (err, data) => {
+                assert.ok(!err, 'getNextTag() threw an unexpected error: ' + err);
+                assert.equal(expected, data);
+                done();
+            });
+        });
+
         it('should return the next tag in the series', (done) => {
             let inputTags = 'v1\nversion1\nbuild1\nv10\nv9\nv11\nv8',
                 inputPrefix = 'v',
-                expected = 'v11';
+                expected = 'v12';
             parser.getNextTag(inputTags, inputPrefix, (err, data) => {
                 assert.ok(!err, 'getNextTag() threw an unexpected error: ' + err);
                 assert.equal(expected, data);

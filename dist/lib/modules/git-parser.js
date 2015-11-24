@@ -34,10 +34,12 @@ var GitParser = (function () {
     }, {
         key: 'filterTags',
         value: function filterTags(tags, prefix, callback) {
+            if (prefix === undefined) prefix = null;
+
             if (tags.constructor !== Array) {
                 return callback('tags must be an array');
             }
-            if (typeof prefix !== "string") {
+            if (prefix && typeof prefix !== "string") {
                 return callback('prefix must be a string');
             }
             var validTagPattern = "^" + prefix + "[1-9]{1}[0-9]*$",
@@ -50,10 +52,12 @@ var GitParser = (function () {
     }, {
         key: 'stripPrefix',
         value: function stripPrefix(tags, prefix, callback) {
+            if (prefix === undefined) prefix = null;
+
             if (tags.constructor !== Array) {
                 return callback('tags must be an array');
             }
-            if (typeof prefix !== "string") {
+            if (prefix && typeof prefix !== "string") {
                 return callback('prefix must be a string');
             }
             var data = _lodash2['default'].map(tags, function (tag) {
@@ -77,13 +81,16 @@ var GitParser = (function () {
         value: function getNextTag(tags, prefix, callback) {
             var _this = this;
 
+            if (prefix === undefined) prefix = null;
+
             if (typeof tags !== 'string') {
                 return callback('tags must be a string');
             }
-            if (typeof prefix !== "string") {
+            if (prefix && typeof prefix !== "string") {
                 return callback('prefix must be a string');
             }
-            var locals = {};
+            var locals = {},
+                num = undefined;
             _async2['default'].series([function (cb) {
                 _this.parseTags(tags, function (err, data) {
                     if (err) {
@@ -125,9 +132,11 @@ var GitParser = (function () {
                     return callback(err);
                 }
                 if (locals.sortedTags.length === 0) {
-                    return callback(null, 0);
+                    return callback(null, prefix + 1);
                 }
-                return callback(null, prefix + + locals.sortedTags[0]++);
+                num = +locals.sortedTags[0];
+                num++;
+                return callback(null, prefix + num);
             });
         }
     }]);
