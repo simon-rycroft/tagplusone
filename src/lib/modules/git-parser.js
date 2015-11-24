@@ -1,5 +1,7 @@
 'use strict';
 
+import _ from 'lodash';
+
 export default class GitParser {
 
     parseTags(tags, callback) {
@@ -16,7 +18,7 @@ export default class GitParser {
         if (typeof prefix !== "string") {
             return callback('prefix must be a string');
         }
-        let validTagPattern = "^" + prefix + "[1-9]{1}[0-9]*",
+        let validTagPattern = "^" + prefix + "[1-9]{1}[0-9]*$",
             regex = new RegExp(validTagPattern),
             filteredTags = tags.filter((tag) => {
                 return tag.match(regex);
@@ -24,9 +26,26 @@ export default class GitParser {
         callback(null, filteredTags);
     }
 
+    stripPrefix(tags, prefix, callback) {
+        if (tags.constructor !== Array) {
+            return callback('tags must be an array');
+        }
+        if (typeof prefix !== "string") {
+            return callback('prefix must be a string');
+        }
+        let data = _.map(tags, (tag) => {
+            return tag.replace(prefix, ''); 
+        });
+        return callback(null, data);
+    }
+
     sortTags(tags, callback) {
         if (tags.constructor !== Array) {
             return callback('tags must be an array');
         }
+        let data = tags.sort((a, b) => {
+            return b-a;
+        });
+        return callback(null, data);
     }
 }

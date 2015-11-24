@@ -106,6 +106,46 @@ describe('The Git Parser', () => {
         });
     });
 
+    describe('stripPrefix method', () => {
+
+        it('should exist', () => {
+            assert.isFunction(parser.stripPrefix);
+        });
+
+        it('should only accept an array as the tags argument', (done) => {
+            let inputTags = {},
+                inputPrefix = 'prefix',
+                expected = 'tags must be an array';
+            parser.stripPrefix(inputTags, inputPrefix, (err, data) => {
+                assert.ok(err, 'stripPrefix() accepts a non-array value for the tags argument');
+                assert.equal(expected, err);
+                done();
+            });
+        });
+
+        it('should only accept a string as the prefix argument', (done) => {
+            let inputTags = [],
+                inputPrefix = [],
+                expected = 'prefix must be a string';
+            parser.stripPrefix(inputTags, inputPrefix, (err, data) => {
+                assert.ok(err, 'stripPrefix() accepts a non-string value for the prefix argument');
+                assert.equal(expected, err);
+                done();
+            });
+        });
+
+        it('should return the same array with the prefix stripped from all values', (done) => {
+            let inputTags = ['ver3', 'ver1', 'ver2'],
+                inputPrefix = 'ver',
+                expected = ['3', '1', '2'];
+            parser.stripPrefix(inputTags, inputPrefix, (err, data) => {
+                assert.ok(!err, 'stripPrefix() threw an unexpcted error');
+                assert.deepEqual(expected, data);
+                done();
+            });
+        });
+    });
+
     describe('sortTags() method', () => {
         
         it('should exist', () => {
@@ -122,29 +162,31 @@ describe('The Git Parser', () => {
             });
         });
 
-        xit('should sort tags so the highest is the first in the array', (done) => {
+        it('should sort tags so the highest is the first in the array', (done) => {
             let inputTags = [
-                    'v100',
-                    'v1',
-                    'v23',
-                    'v101',
-                    'v99',
-                    'v15',
-                    'v102',
-                    'v6',
+                    '100',
+                    '1',
+                    '23',
+                    '101',
+                    '99',
+                    '15',
+                    '102',
+                    '6',
                 ],
                 expected = [
-                    'v102',
-                    'v101',
-                    'v100',
-                    'v99',
-                    'v23',
-                    'v15',
-                    'v6',
-                    'v1',
+                    '102',
+                    '101',
+                    '100',
+                    '99',
+                    '23',
+                    '15',
+                    '6',
+                    '1',
                 ];
             parser.sortTags(inputTags, (err, data) => {
                 assert.ok(!err, 'sortTags() threw an unexpected error');
+                assert.deepEqual(expected, data, 'array was not correctly sorted');
+                done();
             });
         });
     });
