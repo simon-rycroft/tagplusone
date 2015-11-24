@@ -1,6 +1,7 @@
 'use strict';
 
 import _ from 'lodash';
+import async from 'async';
 
 export default class GitParser {
 
@@ -47,5 +48,22 @@ export default class GitParser {
             return b-a;
         });
         return callback(null, data);
+    }
+
+    getLastTag(tags, prefix, callback) {
+        if (tags.constructor !== Array) {
+            return callback('tags must be an array');
+        }
+        if (typeof prefix !== "string") {
+            return callback('prefix must be a string');
+        }
+        async.series([
+            parseTags(tags, prefix, cb);
+        ], (err, result) => {
+            if (err) {
+                return callback(err);
+            }
+            return callback(null, result);
+        });
     }
 }
