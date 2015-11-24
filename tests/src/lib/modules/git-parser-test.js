@@ -191,48 +191,40 @@ describe('The Git Parser', () => {
         });
     });
 
-    describe('getLastTag() method', () => {
+    describe('getNextTag() method', () => {
 
         it('should exist', () => {
-            assert.isFunction(parser.getLastTag);
+            assert.isFunction(parser.getNextTag);
         });
             
-        it('should only accept an array as the tags argument', (done) => {
+        it('should only accept a string as the tags argument', (done) => {
             let inputTags = {},
                 inputPrefix = 'prefix',
-                expected = 'tags must be an array';
-            parser.getLastTag(inputTags, inputPrefix, (err, data) => {
-                assert.ok(err, 'getLastTag() accepts a non-array value for the tags argument');
+                expected = 'tags must be a string';
+            parser.getNextTag(inputTags, inputPrefix, (err, data) => {
+                assert.ok(err, 'getNextTag() accepts a non-array value for the tags argument');
                 assert.equal(expected, err);
                 done();
             });
         });
 
         it('should only accept a string as the prefix argument', (done) => {
-            let inputTags = [],
+            let inputTags = 'v1\nversion1\nbuild1\nv10\nv9\nv11\nv8',
                 inputPrefix = [],
                 expected = 'prefix must be a string';
-            parser.getLastTag(inputTags, inputPrefix, (err, data) => {
-                assert.ok(err, 'getLastTag() accepts a non-string value for the prefix argument');
+            parser.getNextTag(inputTags, inputPrefix, (err, data) => {
+                assert.ok(err, 'getNextTag() accepts a non-string value for the prefix argument');
                 assert.equal(expected, err);
                 done();
             });
         });
 
-        it('should return the most recent tag in the series', (done) => {
-            let inputTags = [
-                    'v1',
-                    'version1',
-                    'build1',
-                    'v10', 
-                    'v9',
-                    'v11',
-                    'v8',
-                ],
+        it('should return the next tag in the series', (done) => {
+            let inputTags = 'v1\nversion1\nbuild1\nv10\nv9\nv11\nv8',
                 inputPrefix = 'v',
-                expected = '11';
-            parser.getLastTag(inputTags, inputPrefix, (err, data) => {
-                assert.ok(!err, 'getLastTag() threw an unexpected error');
+                expected = 'v11';
+            parser.getNextTag(inputTags, inputPrefix, (err, data) => {
+                assert.ok(!err, 'getNextTag() threw an unexpected error: ' + err);
                 assert.equal(expected, data);
                 done();
             });

@@ -17,9 +17,14 @@ var GitClient = (function () {
 
     _createClass(GitClient, [{
         key: 'tag',
-        value: function tag(callback) {
+        value: function tag(prefix, callback) {
 
-            var tag = (0, _child_process.spawn)('git', ['tag']),
+            if (prefix && typeof prefix !== 'string') {
+                return callback('prefix must be a string');
+            }
+
+            var args = !prefix ? ['tag'] : ['tag', '-l', prefix + '*'],
+                tag = (0, _child_process.spawn)('git', args),
                 output = '',
                 err = '';
 

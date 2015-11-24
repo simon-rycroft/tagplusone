@@ -50,20 +50,63 @@ export default class GitParser {
         return callback(null, data);
     }
 
-    getLastTag(tags, prefix, callback) {
-        if (tags.constructor !== Array) {
-            return callback('tags must be an array');
+    getNextTag(tags, prefix, callback) {
+        if (typeof tags !== 'string') {
+            return callback('tags must be a string');
         }
         if (typeof prefix !== "string") {
             return callback('prefix must be a string');
         }
+        let locals = {};
         async.series([
-            parseTags(tags, prefix, cb);
+            (cb) => {
+                this.parseTags(tags, (err, data) => {
+                    if (err) {
+                        cb(err);
+                        return;
+                    }
+                    locals.parsedTags = data;
+                    cb();
+                });
+            },
+            (cb) => {
+                this.filterTags(locals.parsedTags, prefix, (err, data) => {
+                    if (err) {
+                        cb(err);
+                        return;
+                    }
+                    locals.filteredTags = data;
+                    cb();
+                });
+            },
+            (cb) => {
+                this.stripPrefix(locals.filteredTags, prefix, (err, data) => {
+                    if (err) {
+                        cb(err);
+                        return;
+                    }
+                    locals.strippedTags = data;
+                    cb();
+                });
+            },
+            (cb) => {
+                this.sortTags(locals.strippedTags, (err, data) => {
+                    if (err) {
+                        cb(err);
+                        return;
+                    }
+                    locals.sortedTags = data;
+                    cb();
+                });
+            }
         ], (err, result) => {
             if (err) {
                 return callback(err);
             }
-            return callback(null, result);
+            if (locals.sortedTags.length === 0) {
+                return callback(null, 0);
+            }
+            return callback(null, prefix + +locals.sortedTags[0]++);
         });
     }
 }
