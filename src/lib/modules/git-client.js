@@ -1,9 +1,27 @@
+/**
+ * @file A simple wrapper around "git tag"
+ * @author Simon Rycroft simon.rycroft@subcode.io
+ * @copyright Subcode Ltd 2015
+ * @license MIT
+ */
 'use strict';
 
 import {spawn} from 'child_process';
 
 export default class GitClient {
 
+    /**
+     * @callback tagCallback
+     * @param {string} err
+     * @param {string} data The tags returned from the git command.
+     */
+
+    /**
+     * Calls "git tag" and captures the raw output.
+     *
+     * @param {string} prefix If set calls "git tag -l [prefix]*" to fetch only matching tags.
+     * @param {tagCallback} callback Called when the full response has been received from git.
+     */
     tag(prefix = null, callback) {
 
         if (prefix && typeof prefix !== 'string') {
