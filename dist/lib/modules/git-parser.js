@@ -1,3 +1,9 @@
+/**
+ * @file A set of methods for parsing the response from "git tag"
+ * @author Simon Rycroft simon.rycroft@subcode.io
+ * @copyright Subcode Ltd 2015
+ * @license MIT
+ */
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -25,12 +31,39 @@ var GitParser = (function () {
 
     _createClass(GitParser, [{
         key: 'parseTags',
+
+        /**
+         * @callback parseTagsCallback
+         * @param {string} err
+         * @param {array} data An array of tags.
+         */
+
+        /**
+         * Splits the raw tags into an array.
+         *
+         * @param {string} tags The raw "git tags" response i.e. each tag on a new line.
+         * @param {parseTagsCallback} callback
+         */
         value: function parseTags(tags, callback) {
             if (typeof tags !== "string") {
                 return callback('tags must be a string');
             }
             return callback(null, tags.split('\n'));
         }
+
+        /**
+         * @callback filterTagsCallback
+         * @param {string} err
+         * @param {array} data An array of tags.
+         */
+
+        /**
+         * Filters an array of tags an returns only those matching the prefix.
+         *
+         * @param {array} tags An array of tags.
+         * @param {string} prefix An optional tag prefix.
+         * @param {filterTagsCallback} callback
+         */
     }, {
         key: 'filterTags',
         value: function filterTags(tags, prefix, callback) {
@@ -38,6 +71,9 @@ var GitParser = (function () {
 
             if (tags.constructor !== Array) {
                 return callback('tags must be an array');
+            }
+            if (!prefix) {
+                callback(null, tags);
             }
             if (prefix && typeof prefix !== "string") {
                 return callback('prefix must be a string');
@@ -49,6 +85,20 @@ var GitParser = (function () {
             });
             callback(null, filteredTags);
         }
+
+        /**
+         * @callback stripPrefixCallback
+         * @param {string} err
+         * @param {array} data An array of tags.
+         */
+
+        /**
+         * Returns the array of tags with the prefix removed from each.
+         *
+         * @param {array} tags An array of tags.
+         * @param {string} prefix An optional tag prefix.
+         * @param {stripPrefixCallback} callback
+         */
     }, {
         key: 'stripPrefix',
         value: function stripPrefix(tags, prefix, callback) {
@@ -65,6 +115,19 @@ var GitParser = (function () {
             });
             return callback(null, data);
         }
+
+        /**
+         * @callback sortTagsCallback
+         * @param {string} err
+         * @param {array} data An array of tags.
+         */
+
+        /**
+         * Sorts the tags numerically in descending order.
+         *
+         * @param {array} tags An array of tags without prefixes.
+         * @param {sortTagsCallback} callback
+         */
     }, {
         key: 'sortTags',
         value: function sortTags(tags, callback) {
@@ -76,6 +139,20 @@ var GitParser = (function () {
             });
             return callback(null, data);
         }
+
+        /**
+         * @callback getNextTagCallback
+         * @param {string} err
+         * @param {string} data The next tag in the sequence.
+         */
+
+        /**
+         * Determines which should be the next tag in the sequence.
+         *
+         * @param {string} tags The raw tags returned by git i.e. each on a new line.
+         * @param {string} prefix An optional tag prefix.
+         * @param {getNextTagCallback} callback
+         */
     }, {
         key: 'getNextTag',
         value: function getNextTag(tags, prefix, callback) {

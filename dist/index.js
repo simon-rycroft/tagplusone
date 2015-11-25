@@ -1,5 +1,13 @@
 #! /usr/bin/env node
 
+/**
+ * tagplusone: easily create incremental git tags.
+ *
+ * @file This is the main executable.
+ * @author Simon Rycroft simon.rycroft@subcode.io
+ * @copyright Subcode Ltd 2015
+ * @license MIT
+ */
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
