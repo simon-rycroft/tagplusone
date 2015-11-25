@@ -28,7 +28,7 @@ git push --tags
 ```
 
 ## Making Changes
-If you wish to fork this repo and make changes you will probably want to install the Gulp task runner. This is used for running tests, linting and building the distribution files (transpiles from ES6 module syntax to ES5 using Babel).
+If you wish to fork this repo and make changes you will probably want to install the Gulp task runner. This is used for running tests, linting and building the distribution files (transpiles from ES6 to ES5 using Babel).
 ```
 npm install -g gulp
 ```
@@ -50,6 +50,7 @@ After you've made some changes:
 gulp build
 
 # Execute tagplusone
-node dist/index.js
+cd dist
+node index.js [prefix]
 ```
 
